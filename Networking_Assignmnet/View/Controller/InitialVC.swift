@@ -16,13 +16,13 @@ class InitialVC: UIViewController {
         super.viewDidLoad()
         tabelview.delegate = self
         tabelview.dataSource = self
-        viewmodel.fetchProducts { [weak self] result in
+        viewmodel.fetchProducts { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:
-                    self?.tabelview.reloadData()
+                    self.tabelview.reloadData()
                 case .failure(let error):
-                    self!.showErrorAlert(error.localizedDescription)
+                    self.showErrorAlert(error.localizedDescription)
                 }
             }
         }

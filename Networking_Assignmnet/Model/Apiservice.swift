@@ -13,9 +13,10 @@ class getdata{
         let task = URLSession.shared.dataTask(with: URL(string: "http://staging.php-dev.in:8844/trainingapp/api/products/getList?product_category_id=1")!){
             (data, responce , erorr) in
             if erorr == nil{
-                guard let jsondata = try? JSONDecoder().decode(product.self, from: data!) else {return}
-                completion(.success(jsondata))
-                
+                if (responce as! HTTPURLResponse).statusCode <= 300{
+                    guard let jsondata = try? JSONDecoder().decode(product.self, from: data!) else {return}
+                    completion(.success(jsondata))
+                }
             }
             else {
                 completion(.failure(erorr!))
