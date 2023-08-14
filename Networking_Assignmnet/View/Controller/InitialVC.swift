@@ -16,10 +16,23 @@ class InitialVC: UIViewController {
         super.viewDidLoad()
         tabelview.delegate = self
         tabelview.dataSource = self
-        viewmodel.fetchProducts {
-            self.tabelview.reloadData()
-                    }
+        viewmodel.fetchProducts { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    self?.tabelview.reloadData()
+                case .failure(let error):
+                    self!.showErrorAlert(error.localizedDescription)
+                }
+            }
+        }
+        
+    }
 
+    func showErrorAlert(_ error : String){
+        let alertcontroller = UIAlertController(title: "Error", message: error , preferredStyle: .alert)
+        alertcontroller.addAction(UIAlertAction(title: "ok", style: .cancel))
+        self.present(alertcontroller, animated: true, completion: nil)
     }
     
 }

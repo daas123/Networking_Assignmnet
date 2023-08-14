@@ -15,12 +15,36 @@ class getdata{
             if erorr == nil{
                 guard let jsondata = try? JSONDecoder().decode(product.self, from: data!) else {return}
                 completion(.success(jsondata))
+                
+            }
+            else {
+                completion(.failure(erorr!))
             }
             
         }.resume()
-        
     }
     
+    func loadImage(from imageUrl: String, completion: @escaping (UIImage?) -> Void) {
+            guard let url = URL(string: imageUrl) else {
+                completion(nil)
+                return
+            }
+            
+            let imageTask = URLSession.shared.dataTask(with: url) { (data, response, error) in
+                if let error = error {
+                    print("Error loading image: \(error)")
+                    completion(nil)
+                    return
+                }
+                
+                if let data = data, let image = UIImage(data: data) {
+                    completion(image)
+                } else {
+                    completion(nil)
+                }
+            }
+            imageTask.resume()
+        }
     
     
 }
