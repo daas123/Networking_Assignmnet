@@ -20,4 +20,5 @@ struct productlist :Decodable{
     var name : String
     var producer : String
     var cost : Int
+    var product_images : String
 }

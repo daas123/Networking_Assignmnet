@@ -32,6 +32,14 @@ extension InitialVC :  UITableViewDataSource , UITableViewDelegate{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! FirstTableViewCell
         cell.cellProductTitle.text = viewmodel.products[indexPath.row].name
+        cell.cellprice.text = String(viewmodel.products[indexPath.row].cost)
+        cell.cellproducer.text = viewmodel.products[indexPath.row].producer
+        viewmodel.getImagesForProduct(at: indexPath.row) { image in
+                    DispatchQueue.main.async {
+                        cell.cellImage.image = image ?? UIImage(named: "placeholder")
+                    }
+                }
+
         return cell
     }
     
